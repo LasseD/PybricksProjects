@@ -1,8 +1,7 @@
 from pybricks.hubs import TechnicHub
 from pybricks.pupdevices import Motor, Remote
-from pybricks.parameters import Button, Color, Direction, Port, Stop
-from pybricks.robotics import DriveBase
-from pybricks.tools import wait, StopWatch
+from pybricks.parameters import Button, Color, Port
+from pybricks.tools import wait
 
 # Hardware:
 technicHub = TechnicHub()
