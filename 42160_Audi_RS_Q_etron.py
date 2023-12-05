@@ -28,7 +28,7 @@ def resetSteering():
     minSteering = motorSteering.angle()
     MAX_STEERING = (maxSteering-minSteering)/2
     motorSteering.run_target(SPEED_STEERING, (maxSteering+minSteering)/2, then=Stop.HOLD)
-    motorSteering.reset_angle()
+    motorSteering.reset_angle(0)
     technicHub.light.on(Color.GREEN)
     remote.light.on(Color.GREEN)
 resetSteering()
