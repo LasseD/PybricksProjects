@@ -1,6 +1,6 @@
 from pybricks.hubs import TechnicHub
 from pybricks.pupdevices import Motor, Remote
-from pybricks.parameters import Button, Color, Port
+from pybricks.parameters import Button, Color, Port, Stop
 from pybricks.tools import wait
 
 # Hardware:
