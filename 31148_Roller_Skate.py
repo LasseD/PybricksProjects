@@ -16,6 +16,104 @@ dT = 0.050 # Loop time ms
 Kd = 0.10
 Kp = 0.21
 Ki = 0.21
+
+MIN_POWER = 11
+MAX_STEERING = 12
+
+def getPosition():
+    return hub.imu.rotation(Axis.Z)
+
+integral = 0
+lastError = 0
+enabled = False
+motor.reset_angle(0)
+targetPosition = getPosition()
+x = 0
+
+while True:
+    buttons = remote.buttons.pressed()
+    if enabled:
+        p = getPosition()
+        if Button.LEFT_PLUS in buttons:
+            x = x + 0.3
+        elif Button.LEFT_MINUS in buttons:
+            x = x - 0.3
+        error = (p-targetPosition + x + motor.angle()/100) / dT
+        integral = integral + error
+        derivative = error - lastError
+        v = Kp*error + Ki*integral + Kd*derivative
+        v = v + MIN_POWER if v > 0 else v - MIN_POWER
+        motor.dc(v)
+        lastError = error
+    else:
+        if Button.LEFT_PLUS in buttons:
+            speed = -100
+        elif Button.LEFT_MINUS in buttons:
+            speed = 100
+        else:
+            speed = 0
+        motor.dc(speed)
+
+    if Button.CENTER in buttons: # Switch mode and reset:
+        x = 0
+        hub.light.on(Color.BLUE)
+        if enabled:
+            motor.dc(40)
+            wait(50)
+            motor.dc(0)
+            wait(200)
+        else:
+            motor.dc(0)
+            targetPosition = getPosition()+41
+            motor.dc(100)
+            wait(400)
+            motor.dc(-100)
+            ticks = 0
+            while getPosition() < targetPosition:
+                if ticks*50 > 500:
+                    hub.light.on(Color.RED)
+                    enabled = True # make it not turn on!
+                    motor.dc(0)
+                    break
+                wait(50)
+                ticks = ticks + 1
+            motor.reset_angle(0)
+            motor.dc(0)
+            #targetPosition = getPosition()
+            integral = 0
+            lastError = 0
+        enabled = not enabled
+        if Button.CENTER in remote.buttons.pressed():
+            hub.system.shutdown()
+
+    # Steering:
+    if Button.RIGHT_PLUS in buttons:
+        steeringTarget = -MAX_STEERING
+    elif Button.RIGHT_MINUS in buttons:
+        steeringTarget = MAX_STEERING
+    else:
+        steeringTarget = 0
+    motorSteering.track_target(steeringTarget)
+
+    wait(dT*1000)
+from pybricks.hubs import EssentialHub
+from pybricks.pupdevices import Motor, Remote
+from pybricks.parameters import Button, Axis, Color, Port
+from pybricks.tools import wait
+
+hub = EssentialHub()
+remote = Remote()
+motorSteering = Motor(Port.A)
+motor = Motor(Port.B)
+
+# Source code and PID tuning by Ole Caprani:
+# https://cs.au.dk/~ocaprani/legolab/Danish.dir/FLLprogrammering/SorteStreger/LeftEdgeDrive/PID%20Controller%20For%20Lego%20Mindstorms%20Robots.pdf
+Kc = 0.079 # Critical gain
+dT = 0.050 # Loop time ms
+# Multipliers for PID variables:
+Kd = 0.10
+Kp = 0.21
+Ki = 0.21
 #Kd = 0.19
 #Kp = 0.38
 #Ki = 0.24
