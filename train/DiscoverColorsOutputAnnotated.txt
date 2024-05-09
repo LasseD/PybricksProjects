@@ -1,0 +1,55 @@
+Orange to black:
+Color(h=21, s=65, v=100), # ORANGE DISCOVERED!
+Color(h=353, s=89, v=98), # RED DISCOVERED!
+Color(h=354, s=70, v=65), # DARK RED DISCOVERED!
+Color(h=11, s=75, v=88), # Medium Nougat 2
+Color(h=19, s=62, v=94), # Medium-Nougat Over-discovered!
+Color(h=3, s=48, v=57), # Brown Over-discovered!
+Color(h=195, s=15, v=31), # BLACK DISCOVERED!
+
+White to bright light orange:
+Color(h=0, s=0, v=100), # White = Pink DISCOVERED!
+Color(h=191, s=19, v=66), # Dark Gray Over-discovered!
+Color(h=197, s=20, v=97), # Light Gray DISCOVERED!
+Color(h=329, s=73, v=100), # Dark Pink 2
+Color(h=0, s=0, v=100), # White = Pink DISCOVERED!
+Color(h=217, s=91, v=91), # Blue DISCOVERED!
+Color(h=213, s=59, v=48),
+Color(h=208, s=73, v=100), # Light Blue DISCOVERED
+Color(h=180, s=75, v=100), # Aqua DISCOVERED
+Color(h=190, s=84, v=89), # Teal DISCOVERED
+Color(h=167, s=37, v=43), # Dark Green Over-discovered!
+Color(h=155, s=75, v=67), # GREEN DISCOVERED
+Color(h=155, s=43, v=89), # Sand Green DISCOVERED
+Color(h=93, s=65, v=99), # LIME DISCOVERED
+Color(h=60, s=31, v=100), # Yellow 3
+Color(h=49, s=66, v=99), # Gold Over-discovered!
+Color(h=41, s=66, v=100), # BLO Over-discovered!
+
+
+Empty:
+Color(h=197, s=22, v=57),
+Color(h=21, s=55, v=86),
+Color(h=190, s=11, v=55),
+Color(h=40, s=46, v=85),
+
+White / pink:
+Color(h=0, s=0, v=100),
+
+Usable Colors:
+Color(h=21, s=65, v=100), # ORANGE DISCOVERED!
+Color(h=353, s=89, v=98), # RED DISCOVERED!
+Color(h=217, s=91, v=91), # Blue DISCOVERED!
+Color(h=155, s=75, v=67), # GREEN DISCOVERED
+Color(h=93, s=65, v=99), # LIME DISCOVERED
+
+Color(h=195, s=15, v=31), # BLACK DISCOVERED!
+Color(h=0, s=0, v=100), # White = Pink DISCOVERED!
+
+Color(h=354, s=70, v=65), # DARK RED DISCOVERED!
+Color(h=197, s=20, v=97), # Light Gray DISCOVERED!
+Color(h=208, s=73, v=100), # Light Blue DISCOVERED
+Color(h=180, s=75, v=100), # Aqua DISCOVERED
+Color(h=190, s=84, v=89), # Teal DISCOVERED
+Color(h=155, s=43, v=89), # Sand Green DISCOVERED
+
