@@ -1,6 +1,6 @@
 from pybricks.hubs import CityHub
 from pybricks.pupdevices import Motor, Remote
-from pybricks.parameters import Button, Color, Direction, Port, Side
+from pybricks.parameters import Button, Color, Direction, Port
 from pybricks.tools import wait
 
 # Set up hardware:
@@ -9,51 +9,33 @@ hub.light.on(Color.RED)
 remote = Remote()
 hub.light.on(Color.GREEN)
 remote.light.on(Color.GREEN)
-motors = [Motor(Port.B, Direction.COUNTERCLOCKWISE), Motor(Port.A)]
+m1 = Motor(Port.B, Direction.COUNTERCLOCKWISE)
+m2 = Motor(Port.A)
 
 # Main loop:
-steering = 0
-speed = 0
-MAX_SPEED = 100
-MIN_SPEED = 10
-SPEED_INC = 4
-MAX_STEERING_SPEED = 80
-STEERING_INC = 2
+speed_left = 0
+speed_right = 0
+SPEED_INC = 22
+
+def updateMotor(m, plus, minus, currentSpeed):
+    if plus:
+        currentSpeed = currentSpeed + SPEED_INC
+        if currentSpeed > 100:
+            currentSpeed = 100
+    elif minus:
+        currentSpeed = currentSpeed - SPEED_INC
+        if currentSpeed < -100:
+            currentSpeed = -100
+    else:
+        currentSpeed = currentSpeed * 0.6
+        if abs(currentSpeed) < 30:
+            m.stop()
+            return 0
+    m.dc(currentSpeed)
+    return currentSpeed
+
 while True:
     buttons = remote.buttons.pressed()
-
-    # Control speed with left side:
-    if Button.LEFT_PLUS in buttons:
-        speed = speed + SPEED_INC
-        if speed > MAX_SPEED:
-            speed = MAX_SPEED
-    elif Button.LEFT_MINUS in buttons:
-        speed = speed - SPEED_INC
-        if speed < -MAX_SPEED:
-            speed = -MAX_SPEED
-    else:
-        speed = speed * 0.9
-        if abs(speed) < MIN_SPEED:
-            speed = 0
-
-    # Control steering with right side:
-    if Button.RIGHT_PLUS in buttons:
-        steering = max(0, steering + STEERING_INC)
-        if steering > MAX_STEERING_SPEED:
-            steering = MAX_STEERING_SPEED
-    elif Button.RIGHT_MINUS in buttons:
-        steering = min(0, steering - STEERING_INC)
-        if steering < -MAX_STEERING_SPEED:
-            steering = -MAX_STEERING_SPEED
-    else:
-        steering = steering * 0.9
-        if abs(steering) < 3:
-            steering = 0
-
-    # Update motors:
-    speed1 = max(-100, min(100, speed + steering))
-    speed2 = max(-100, min(100, speed - steering))
-    motors[0].dc(speed1)
-    motors[1].dc(speed2)
-
-    wait(25)
+    speed_left = updateMotor(m1, Button.LEFT_PLUS in buttons, Button.LEFT_MINUS in buttons, speed_left)
+    speed_right = updateMotor(m2, Button.RIGHT_PLUS in buttons, Button.RIGHT_MINUS in buttons, speed_right)
+    wait(50)

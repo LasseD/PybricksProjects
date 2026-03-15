@@ -3,12 +3,10 @@ from pybricks.pupdevices import Motor, Light, Remote
 from pybricks.parameters import Button, Color, Direction, Port
 from pybricks.tools import wait, StopWatch
 
-# Lifter constants:
-SPEED_MAX = 500
-SPEED_INC = 25
-LIFT_MAX = 800
-LIFT_INC = 20
-# Track constants:
+MAX_TRACK = 70
+MIN_LIFT_DOWN = -70
+MAX_LIFT_UP = 100
+SPEED_INC = 20
 m1 = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 m2 = Motor(Port.A)
 
@@ -33,28 +31,27 @@ speed_left = 0
 speed_right = 0
 speed_lift = 0
 
-def updateMotor(m, plus, minus, currentSpeed, speedInc, speedMax):
+def updateMotor(m, plus, minus, currentSpeed, mn, mx):
     if plus:
-        currentSpeed = currentSpeed + speedInc
-        if currentSpeed > speedMax:
-            currentSpeed = speedMax
+        currentSpeed = currentSpeed + SPEED_INC
+        if currentSpeed > mx:
+            currentSpeed = mx
     elif minus:
-        currentSpeed = currentSpeed - speedInc
-        if currentSpeed < -speedMax:
-            currentSpeed = -speedMax
+        currentSpeed = currentSpeed - SPEED_INC
+        if currentSpeed < mn:
+            currentSpeed = mn
     else:
         currentSpeed = currentSpeed * 0.6
-        if abs(currentSpeed) < 10:
+        if abs(currentSpeed) < 30:
             m.stop()
             return 0
-    m.run(currentSpeed)
+    m.dc(currentSpeed)
     return currentSpeed
 
 while True:
     updateFlash()
     buttons = remote.buttons.pressed()
-    speed_left = updateMotor(m1, Button.LEFT_PLUS in buttons, Button.LEFT_MINUS in buttons, speed_left, SPEED_INC, SPEED_MAX)
-    speed_right = updateMotor(m2, Button.RIGHT_PLUS in buttons, Button.RIGHT_MINUS in buttons, speed_right, SPEED_INC, SPEED_MAX)
-    speed_lift = updateMotor(lifter, Button.LEFT in buttons, Button.RIGHT in buttons, speed_lift, LIFT_INC, LIFT_MAX)
-
-    wait(25)
+    speed_left = updateMotor(m1, Button.LEFT_PLUS in buttons, Button.LEFT_MINUS in buttons, speed_left, -MAX_TRACK, MAX_TRACK)
+    speed_right = updateMotor(m2, Button.RIGHT_PLUS in buttons, Button.RIGHT_MINUS in buttons, speed_right, -MAX_TRACK, MAX_TRACK)
+    speed_lift = updateMotor(lifter, Button.LEFT in buttons, Button.RIGHT in buttons, speed_lift, MIN_LIFT_DOWN, MAX_LIFT_UP)
+    wait(50)
